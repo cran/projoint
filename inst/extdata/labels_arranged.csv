@@ -1,0 +1,25 @@
+level_id,attribute,level,order
+att1:level1,Housing Cost (Pre-tax Income),15%,1
+att1:level2,Housing Cost (Pre-tax Income),30%,2
+att1:level3,Housing Cost (Pre-tax Income),40%,3
+att2:level2,Presidential Vote (2020),"50% Dem, 50% Rep",4
+att2:level1,Presidential Vote (2020),"30% Dem, 70% Rep",5
+att2:level3,Presidential Vote (2020),"70% Dem, 30% Rep",6
+att3:level1,Racial Composition,"50% White, 50% Nonwhite",7
+att3:level2,Racial Composition,"75% White, 25% Nonwhite",8
+att3:level3,Racial Composition,"90% White, 10% Nonwhite",9
+att3:level4,Racial Composition,"96% White, 4% Nonwhite",10
+att4:level1,School Quality,5 out of 10,11
+att4:level2,School Quality,9 out of 10,12
+att5:level1,Daily Driving Time,10 min,13
+att5:level2,Daily Driving Time,25 min,14
+att5:level3,Daily Driving Time,45 min,15
+att5:level4,Daily Driving Time,75 min,16
+att7:level1,Violent Crime Rate,20% < National Ave.,17
+att7:level2,Violent Crime Rate,20% > National Ave.,18
+att6:level2,Type of Place,"City, more residential area",19
+att6:level1,Type of Place,"City, downtown area",20
+att6:level3,Type of Place,Rural area,21
+att6:level4,Type of Place,Small town,22
+att6:level5,Type of Place,"Suburban, only houses",23
+att6:level6,Type of Place,"Suburban, downtown area",24

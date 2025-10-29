@@ -1,0 +1,273 @@
+---
+title: "Read and Wrangle Your Data"
+output: rmarkdown::html_vignette
+description: >
+  Read your Qualtrics data and wrangle it in R.
+vignette: >
+  %\VignetteIndexEntry{Read and Wrangle Your Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(projoint)
+```
+
+## 📥 Read Your Data
+
+Before you can reshape or analyze your conjoint survey data, you first need to **import it into R**.  In **projoint**, use the `read_Qualtrics()` function to quickly read properly formatted Qualtrics files.
+
+---
+
+## 🚀 Read Workflow
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**1. Export your survey responses from Qualtrics**</summary>
+
+When exporting from Qualtrics:
+
+- Click **"Download Data"**.
+- Choose **CSV** format.
+- Critically, select **"Use choice text"** rather than coded values.
+
+⚡ If you skip selecting "Use choice text," your conjoint data may fail to load properly!
+
+</details>
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**2. Load essential packages**</summary>
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(projoint)
+```
+</details>
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**3. Read your CSV file into R using `read_Qualtrics()`**</summary>
+
+```r
+# Example: If your file is located in a "data" folder
+data <- read_Qualtrics("data/your_file.csv")
+```
+Or, if using an example bundled with **projoint**:
+
+```{r, eval=TRUE, echo=FALSE}
+data <- read_Qualtrics(
+  system.file("extdata", "mummolo_nall_replication.csv", package = "projoint")
+)
+```
+
+```{r}
+# Inspect the imported data:
+data
+```
+</details>
+
+---
+
+```{r fig-setup, include=FALSE}
+# Global default settings for all figures
+knitr::opts_chunk$set(
+  fig.width = 7,
+  fig.height = 5,
+  fig.align = "center",
+  dpi = 300  # Optional: high-resolution plots
+)
+
+# Helper functions for special figure sizes
+narrow_fig <- function() list(fig.width = 5, fig.height = 4)
+wide_fig <- function() list(fig.width = 8, fig.height = 5)
+tall_fig <- function() list(fig.width = 6, fig.height = 7)
+
+# Load libraries
+library(projoint)
+data(exampleData1, package = "projoint")
+data(exampleData2, package = "projoint")
+data(exampleData3, package = "projoint")
+data(exampleData1_labelled_tibble, package = "projoint")
+data(out1_arranged, package = "projoint")
+
+```
+
+## 🛠️ Wrangle Your Data
+
+Preparing your data correctly is one of the most important steps in conjoint analysis. Fortunately, the `reshape_projoint()` function in **projoint** makes this easy.
+
+---
+
+## 🚀 Wrangle Workflow
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**1. Reshape Your Data**</summary>
+<div>
+
+> **Outcome naming & order (important)**
+> 
+> - List `.outcomes` in the **order questions were asked**.  
+> - If you have a repeated task, its outcome must be the **last element**.  
+> - For base tasks (all but last), the function reads the **digits** in each name as the task id (e.g., `"choice4"`, `"Q4"`, `"task04"` → task 4).  
+> - The **repeated base task** is inferred from the **first base outcome’s digits**. The repeated outcome itself **need not** contain digits—only its position (last) matters.  
+> - Outcome strings should end with your choice labels; by default we parse the **last character** and expect `"A"`/`"B"`. If your survey uses `"1"`/`"2"` (or other endings), set `.choice_labels` accordingly.
+
+
+### Example (Flipped Repeated Task)
+
+```{r, error=TRUE}
+outcomes <- paste0("choice", 1:8)
+outcomes1 <- c(outcomes, "choice1_repeated_flipped")
+
+out1 <- reshape_projoint(
+  .dataframe = exampleData1,
+  .outcomes = outcomes1,
+  .choice_labels = c("A", "B"),
+  .alphabet = "K",
+  .idvar = "ResponseId",
+  .repeated = TRUE,
+  .flipped = TRUE
+)
+```
+
+**Key Arguments**:
+
+- `.outcomes`: Outcome columns (include repeated task last)
+- `.choice_labels`: Profile labels (e.g., "A", "B")
+- `.idvar`: Respondent ID variable
+- `.alphabet`: Variable prefix ("K")
+- `.repeated`, `.flipped`: If repeated task exists and is flipped
+
+</div>
+</details>
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**2. Variations: Repeated vs. Non-Repeated**</summary>
+
+**Not-Flipped Repeated Task**
+
+```{r}
+outcomes <- paste0("choice", 1:8)
+outcomes2 <- c(outcomes, "choice1_repeated_notflipped")
+out2 <- reshape_projoint(
+  .dataframe = exampleData2,
+  .outcomes = outcomes2,
+  .repeated = TRUE,
+  .flipped = FALSE
+)
+```
+
+**No Repeated Task**
+
+```{r}
+outcomes <- paste0("choice", 1:8)
+out3 <- reshape_projoint(
+  .dataframe = exampleData3,
+  .outcomes = outcomes,
+  .repeated = FALSE
+)
+```
+
+</details>
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**3. The `.fill` Argument: Should You Use It?**</summary>
+
+Use `.fill = TRUE` to "fill" missing values based on IRR agreement.
+
+```{r}
+fill_FALSE <- reshape_projoint(
+  .dataframe = exampleData1,
+  .outcomes = outcomes1,
+  .fill = FALSE
+)
+
+fill_TRUE <- reshape_projoint(
+  .dataframe = exampleData1,
+  .outcomes = outcomes1,
+  .fill = TRUE
+)
+```
+
+Compare:
+
+```{r}
+selected_vars <- c("id", "task", "profile", "selected", "selected_repeated", "agree")
+fill_FALSE$data[selected_vars]
+fill_TRUE$data[selected_vars]
+```
+
+**Tip:**  
+- Use `.fill = TRUE` for small-sample or subgroup analysis (helps increase power).  
+- Use `.fill = FALSE` (default) when in doubt for safer estimates.
+
+</details>
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**4. What If Your Data Is Already Clean?**</summary>
+
+If you already have a clean dataset, use `make_projoint_data()`:
+
+```{r}
+out4 <- make_projoint_data(
+  .dataframe = exampleData1_labelled_tibble,
+  .attribute_vars = c(
+    "School Quality", "Violent Crime Rate (Vs National Rate)",
+    "Racial Composition", "Housing Cost",
+    "Presidential Vote (2020)", "Total Daily Driving Time for Commuting and Errands",
+    "Type of Place"
+  ),
+  .id_var = "id",
+  .task_var = "task",
+  .profile_var = "profile",
+  .selected_var = "selected",
+  .selected_repeated_var = "selected_repeated",
+  .fill = TRUE
+)
+```
+
+Preview:
+
+```{r}
+out4
+```
+
+</details>
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**5. Arranging Attribute and Level Labels**</summary>
+
+To reorder or relabel attributes:
+
+1. Save labels:
+
+```{r, eval=FALSE}
+save_labels(out1, "temp/labels_original.csv")
+```
+
+2. Edit the CSV (change `order`, label columns; leave `level_id` untouched)
+
+3. Save it as "labels_arranged.csv" or something else.
+
+4. Reload labels:
+
+```{r, eval=FALSE}
+data(out1_arranged, package = "projoint")
+```
+
+Compare using our example:
+
+```{r}
+mm <- projoint(out1, .structure = "profile_level", .estimand = "mm")
+plot(mm)
+```
+
+```{r}
+mm <- projoint(out1_arranged, .structure = "profile_level", .estimand = "mm")
+plot(mm)
+```
+
+</details>
+
+---
+
+🏠 **Home:** [Home](https://yhoriuchi.github.io/projoint/index.html)
+

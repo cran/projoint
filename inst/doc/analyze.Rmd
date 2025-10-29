@@ -1,0 +1,224 @@
+---
+title: "Analyze and Visualize Important QOIs"
+output: rmarkdown::html_vignette
+description: >
+  How to estimate and correct marginal means (MMs) or average marginal component effects (AMCEs), including predicting IRR if necessary. Visualize these and other QOIs of interest.
+vignette: >
+  %\VignetteIndexEntry{Analyze and Visualize Important QOIs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+library(projoint)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+```
+
+## 🎯 Estimate Corrected MMs or AMCEs
+
+In conjoint analysis, default MMs and AMCEs can be **biased** due to measurement error from intra-respondent variability.
+
+**projoint** corrects for this bias automatically.
+
+The following instructions apply to choice-level data. What if you have profile-level data?<sup><a href="faq.html#what-if-i-have-profile-level-data" target="_blank" style="text-decoration: none;">&#9432;</a></sup> Our <a href="faq.html" target="_blank">FAQ Page</a> has instructions to estimate and visualize profile-level QOIs.
+
+---
+
+## 📦 Prepare Example Data
+
+> **Outcome naming & order (important)**
+> 
+> - List `.outcomes` in the **order questions were asked**.  
+> - If you have a repeated task, its outcome must be the **last element**.  
+> - For base tasks (all but last), the function reads the **digits** in each name as the task id (e.g., `"choice4"`, `"Q4"`, `"task04"` → task 4).  
+> - The **repeated base task** is inferred from the **first base outcome’s digits**. The repeated outcome itself **need not** contain digits—only its position (last) matters.  
+> - Outcome strings should end with your choice labels; by default we parse the **last character** and expect `"A"`/`"B"`. If your survey uses `"1"`/`"2"` (or other endings), set `.choice_labels` accordingly.
+
+**Examples**
+
+```{r}
+# Standard order; repeated = task 1
+data("exampleData1")
+outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
+out1 <- reshape_projoint(exampleData1, outcomes)
+```
+
+---
+
+## 🛠️ Why Use IDs (e.g., `att1`, `level1`)?
+
+Before estimating quantities, it’s important to understand how attribute and level IDs work inside projoint.
+
+<details>
+We recommend working with **attribute IDs** rather than actual text labels because:
+
+- Safer against special characters, languages, or typos
+- Allows **multiple attributes** to have identical labels (e.g., "High" for both "Teaching Quality" and "Research Quality")
+
+Check attribute-level mappings:
+
+```{r}
+out1$labels
+```
+
+You can also save these labels for easier editing:
+
+```r
+save_labels(out1, "labels.csv")
+```
+</details>
+---
+
+## 📈 Estimate Marginal Means (MMs)
+
+<details><summary><b>Choice-Level MMs (Specific Level)</b></summary>
+
+Suppose you want to estimate, within a given profile pair, the probability of choosing a profile that includes "40% of pre-tax income" (`level3`) for Housing Cost (`att1`) rather than one that includes "15% of pre-tax income" (`level1`) for the same attribute, averaging over all combinations of the other attributes and across respondents; then use the following code:
+
+```{r}
+qoi <- set_qoi(
+  .structure = "choice_level",
+  .att_choose = "att1",
+  .lev_choose = "level3",
+  .att_notchoose = "att1",
+  .lev_notchoose = "level1"
+)
+
+mm2 <- projoint(out1, qoi)
+print(mm2)
+summary(mm2)
+```
+
+</details>
+---
+
+## 📉 Estimate AMCEs
+
+<details><summary><b>Choice-Level AMCEs (Specific Level)</b></summary>
+
+Suppose you want to quantify how the choice probability **changes** between the following profile pairs:
+
+- choosing a profile that includes "40% of pre-tax income" (`level3`) for Housing Cost (`att1`) versus one that includes "15% of pre-tax income" (`level1`) for Housing Cost (`att1`); **and**
+- [baseline] choosing a profile that includes "30% of pre-tax income" (`level2`) for Housing Cost (`att1`) versus one that includes "15% of pre-tax income" (`level1`) for Housing Cost (`att1`); 
+
+averaging over all combinations of the other attributes and across respondents. Then write the following code:
+
+```{r}
+qoi <- set_qoi(
+  .structure = "choice_level",
+  .estimand = "amce",
+  .att_choose = "att1",
+  .lev_choose = "level3",
+  .att_notchoose = "att1",
+  .lev_notchoose = "level1",
+  .att_choose_b = "att1",
+  .lev_choose_b = "level2",
+  .att_notchoose_b = "att1",
+  .lev_notchoose_b = "level1"
+)
+
+amce2 <- projoint(out1, qoi)
+print(amce2)
+summary(amce2)
+```
+
+</details>
+---
+
+## 🔎 Predict Intra-Respondent Reliability (IRR)
+
+If your design **does not include** a repeated task, you can **predict** IRR using predict_tau(), based on observed respondent behavior.
+
+<details><summary><b>Predict IRR Using `predict_tau()`</b></summary>
+
+```{r}
+data(out1_arranged)
+predicted_irr <- predict_tau(out1_arranged)
+
+print(predicted_irr)
+summary(predicted_irr)
+plot(predicted_irr)
+```
+
+</details>
+---
+
+```{r fig-setup, include=FALSE}
+# Global default settings for all figures
+knitr::opts_chunk$set(
+  fig.width = 6,
+  fig.height = 3,
+  fig.align = "center",
+  dpi = 300  # Optional: high-resolution plots
+)
+
+# Helper functions for special figure sizes
+narrow_fig <- function() list(fig.width = 5, fig.height = 4)
+wide_fig <- function() list(fig.width = 8, fig.height = 5)
+tall_fig <- function() list(fig.width = 6, fig.height = 7)
+
+```
+
+```{r, echo=FALSE}
+library(projoint)
+library(ggplot2)
+
+data(out1_arranged, package = "projoint")
+```
+
+## 🎨 Visualize MMs or AMCEs
+
+The **projoint** package provides ready-to-publish plotting tools for conjoint analysis results.
+
+<span style="color:DarkRed"><b>Note:</b></span> The current version of **projoint** supports plotting choice-level MMs only.  
+Support for **choice-level AMCEs** will be available in future updates!
+
+---
+
+### ⚖️ Choice-Level Analysis
+
+<details>
+<summary><b>Estimate</b></summary>
+
+- Specify your quantity of interest:
+```{r}
+qoi_mm <- set_qoi(
+  .structure = "choice_level", # default
+  .att_choose = "att1", 
+  .lev_choose = "level1", 
+  .att_notchoose = "att1", 
+  .lev_notchoose = "level3"
+)
+```
+
+- Estimate
+```{r}
+choice_mm <- projoint(
+  .data = out1_arranged, 
+  .qoi = qoi_mm, 
+  .ignore_position = TRUE
+)
+```
+</details>
+
+<details>
+<summary><b>Visualize (Levels) </b></summary>
+
+```{r, fig.width = 6, fig.height = 3}
+plot(choice_mm)
+```
+</details>
+
+<details>
+<summary><b>Visualize (Differences)</b></summary>
+
+```{r, fig.width = 8, fig.height = 2}
+plot(choice_mm, .type = "pointrange")
+```
+</details>
+
+---
+
+🏠 **Home:** [Home](https://yhoriuchi.github.io/projoint/index.html)

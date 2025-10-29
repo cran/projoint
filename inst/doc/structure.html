@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Choice-Level Analysis</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Choice-Level Analysis</h1>
+
+
+
+<div id="why-choice-level-analysis." class="section level2">
+<h2><strong>Why Choice-Level Analysis?</strong>.</h2>
+<summary>
+Choice-level analysis is simpler, easier, and more powerful than
+profile-level analysis.
+</summary>
+<p>Conjoint designs originated in market research and psychology where
+each respondent is asked to rate each of two different profiles (e.g.,
+two products). Each of the two ratings provided separate information,
+and the two are analyzed as separate observations. Researchers with this
+<em>profile-level</em> design find it convenient to arrange their data
+with one profile per row, and thus twice as many rows as
+respondents.</p>
+<p>
+Unfortunately, when social scientists adopted the conjoint survey
+design, they kept the same profile-level design but changed the outcome
+measure from separate ratings to a single choice between the two
+profiles (e.g., to reflect a voter choice between two candidates). In
+this situation, respondents asked to make one choice between the two
+profiles that are exactly dependent, as choosing one necessarily meant
+not choosing the other (e.g., in a two-candidate partisan election, one
+observation would be “Democrat” and the other would be “not the
+Republican”). Using this profile-level design with 2*n rows but only n
+independent observations requires the introduction of complicated
+statistical procedures to correct for the dependence induced solely by
+the researcher’s decision to organize the data in this complicated way.
+</p>
+<p>
+We recommend the much simpler and more powerful <em>choice-level</em>
+design. The idea is to arrange data at the level of the respondent’s
+choice, so that each row in the data matrix includes information about
+one choice (and both profiles together, with n observations and n rows).
+Our
+<a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link"><em>AJPS</em>
+article</a> clarifies this point, shows how this choice-level analysis
+vastly simplifies the notation, statistical analysis procedures, and
+intuition, and greatly expands the substantive questions conjoint
+analysis be used to answer.
+</p>
+<p><strong>Key Issues:</strong></p>
+<ul>
+<li><p>Profile-level quantities like AMCEs, which require the assumption
+of independently generated profiles and disregard the context of
+comparison, prevent researchers from investigating many questions that
+(implicitly or explicitly) assume dependence between profiles.</p></li>
+<li><p><strong>Examples</strong> of choice-level research questions</p>
+<details>
+<ul>
+<li>Do voters choose a <strong>white</strong> candidate over a
+<strong>non-white</strong> candidate?
+<ul>
+<li>The levels (white vs. Asian, Black, Hispanic) always differ between
+profiles.</li>
+</ul></li>
+<li>Do <strong>Asian Democrat respondents</strong> prefer an
+<strong>Asian Republican</strong> over a <strong>white
+Democrat</strong>?
+<ul>
+<li>The two profiles are specifically designed based on multiple
+attributes.<br />
+</li>
+</ul></li>
+<li>Do voters care about candidate electability?
+<ul>
+<li>The sum of the two percentages should be 100.</li>
+</ul></li>
+<li>Do voters prefer a <strong>status quo</strong> option over a
+<strong>policy proposal</strong>?
+<ul>
+<li>One profile is always fixed, while another varies across tasks.</li>
+</ul></li>
+<li>How much do voters prefer <strong>extreme left-leaning</strong> or
+<strong>extreme right-leaning</strong> policies?
+<ul>
+<li>The left-leaning (right-leaning) candidate’s policies (attributes)
+should always be positioned consistently on the left (right).</li>
+</ul></li>
+</ul></li>
+</ul>
+</details>
+<ul>
+<li>When individuals compare two profiles side-by-side (as in most
+conjoint tasks), their evaluations are often <strong>psychologically
+influenced by the alternative</strong> (See Horiuchi and Johnson
+2025).</li>
+</ul>
+<hr />
+</div>
+<div id="why-move-to-choice-level-analysis" class="section level2">
+<h2><strong>Why Move to Choice-Level Analysis?</strong></h2>
+<ul>
+<li><strong>Choice-level analysis</strong> models the decision
+<strong>between two profiles</strong>, not the evaluation of a single
+profile.</li>
+<li>This approach more closely mirrors:
+<ul>
+<li>How people make real-world tradeoffs (e.g., choosing between
+candidates, products, policies)</li>
+<li>How comparative contexts shape judgments (e.g., assimilation,
+contrast effects)</li>
+</ul></li>
+<li>Rather than estimating the probability of selecting a standalone
+profile, choice-level analysis estimates <strong>the probability of
+choosing one profile over another</strong>, conditional on both the
+attributes of interest and other attributes.</li>
+</ul>
+<p>✅ <strong>Better matches real-world behavior</strong><br />
+✅ <strong>Explicitly captures comparative
+decision-making</strong><br />
+✅ <strong>Reveals true tradeoffs and feature
+prioritization</strong></p>
+<hr />
+</div>
+<div id="summary" class="section level2">
+<h2><strong>Summary</strong></h2>
+<table>
+<colgroup>
+<col width="51%" />
+<col width="48%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Profile-Level Analysis</th>
+<th align="left">Choice-Level Analysis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Treats profiles independently</td>
+<td align="left">Models the decision between profiles</td>
+</tr>
+<tr class="even">
+<td align="left">Ignores comparative psychology</td>
+<td align="left">Captures influence of side-by-side comparisons</td>
+</tr>
+<tr class="odd">
+<td align="left">May blur or bias tradeoffs</td>
+<td align="left">Highlights real tradeoffs</td>
+</tr>
+<tr class="even">
+<td align="left">Can be misleading</td>
+<td align="left">Much more informative</td>
+</tr>
+<tr class="odd">
+<td align="left">Requires complicated statistics</td>
+<td align="left">Allows simple methods</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="key-takeaway" class="section level2">
+<h2><strong>Key Takeaway</strong></h2>
+<blockquote>
+<p>🔎 If your conjoint design presents two profiles for comparison,
+<strong>choice-level analysis is essential for valid and insightful
+inference</strong>.</p>
+<p>📈 It provides <strong>deeper insights</strong>, <strong>more
+accurate estimates</strong>, and a <strong>closer reflection of actual
+decision-making</strong>.</p>
+</blockquote>
+<hr />
+</div>
+<div id="references" class="section level2">
+<h2>📚 <strong>References</strong></h2>
+<ul>
+<li><strong>Clayton, Horiuchi, Kaufman, King, Komisarchik
+(Forthcoming).</strong><br />
+“Correcting Measurement Error Bias in Conjoint Survey
+Experiments.”<br />
+<em>Forthcoming, American Journal of Political Science.</em><br />
+<a href="https://gking.harvard.edu/conjointE">Pre-Print
+Available</a></li>
+<li><strong>Horiuchi and Johnson (2025).</strong><br />
+“Advancing Conjoint Analysis: Delving Further into Profile
+Comparisons.”<br />
+<em>Work-in-progress.</em></li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

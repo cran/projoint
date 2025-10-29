@@ -1,0 +1,76 @@
+---
+title: "Design Your Survey"
+output: rmarkdown::html_vignette
+description: >
+  Learn how to set up your conjoint survey in Qualtrics, with or without the Projoint Survey Design Tool.
+vignette: >
+  %\VignetteIndexEntry{Design Your Survey}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Set Up Your Survey Using the Projoint Survey Design Tool
+
+Using our <a href="https://projoint.aaronrkaufman.com/" target="_blank">Projoint Survey Design Tool</a>, you can easily: 
+
+- Set up attributes and levels
+- Randomize attributes and levels with weights
+- Add cross-attributes *and* cross-profile constraints
+- Automatically create a repeated task for intra-respondent reliability (IRR) estimation
+- Generate test responses for checking your design
+- 🚀 <span style="color:DarkOrange"><b>Export your survey directly for Qualtrics (in QSF format)</b></span> ✅
+
+---
+
+## How to Use the Projoint Survey Design Tool
+
+The following instructions are taken directly from the Projoint Survey Design Tool's <a href="https://projoint.aaronrkaufman.com/tutorials/00_tutorial.md" target="_blank">Tutorial section</a>.
+
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**1. Setting the Attributes**</summary>
+The most important part of a discrete choice experiment is setting the attributes and levels: these are the features that are getting randomized. Add attributes by clicking on the "Add Attribute" button, and add levels by clicking on the "Add Level" button.
+
+There are two advanced options on the page where users add attributes and levels. The first controls the order in which attributes appear to respondents. By clicking on the padlock icon to the right of each attribute, the user can control where they appear. A locked icon will always appear in the indicated position, so if the second attribute is locked, that attribute will always appear second in the list of attributes shown to respondents.
+
+The second advanced option controls randomization weights, and can be accesed by clicking on the "Edit Weights" button. This allows researchers to set how frequently each level should appear. Most choice experiments set each level to equal frequency, but this is not necessarily preferred.
+
+After you have set the attributes and levels, we recommend going to the Preview screen to preview your study. This produces a single task, which can be refreshed, so the researcher can see what the respondents will see.
+
+</details>
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**2. Additional Settings**</summary>
+* <b>Number of profiles</b>: This defaults to 2, a binary comparison, but can be any positive integer. We recommend no more than 5.
+* <b>Number of tasks</b>: This is the number of distinct comparison tasks the respondent sees. More tasks produces more data, but also potentially fatigues the respondent.
+* <b>Repeated task</b>: This toggles whether one of the tasks respondents see is an exact duplicate of a previous task. By comparing the rate at which respondents give the same answer to identical questions, it is possible to measure and correct for a certain type of measurement error in conjoint studies. We strongly recommend turning this on.
+* <b>Repeated task is shuffled</b>: Option to either flip columns for repeated tasks.
+* <b>Which task to repeat?</b>: Which of the tasks should be repeated? This can range from 1 to N where N is the number of tasks.
+* <b>Where to repeat?</b>: Where should the repeated task go? This can range from K where K is the index of the task to be repeated to N+1 where N is the number of tasks.
+* <b>Ordering of attributes</b>: How should the order of attributes be randomized? The three options are Non random, Participant randomized, and Task randomized. Non-random says that every respondent and every task will have the same attribute order: the one specified by you. Participant-randomized says that each participant sees a different attribute order, but that attribute order is the same for all of that participant's tasks. In other words, each participant sees one ordering of attributes. Task-randomized says that every task has an independently-randomized attribute order. We recommend Participant-randomized as it is less confusing for participants.
+
+</details>
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**3. Restrictions**</summary>
+There are two types of restrictions we discuss: <b>cross-attribute restrictions</b> and <b>cross-profile restrictions</b>. Cross-attribute restrictions prevent a profile from being logically inconsistent. For example, in a conjoint study comparing potential immigrants, if an immigrant has only a middle school education, their career cannot be neurosurgeon. Cross-profile restrictions produce dependencies across the different profiles of one task. For example, in a conjoint study comparing political candidates in a two-party, if one candidate is polling at 60%, the other must be polling at 40% or less.
+
+</details>
+<details style="margin-left: 25px; margin-bottom: -10px">
+<summary style="font-size: 18px;">**4. Exporting**</summary>
+There are four options for exporting a survey, and we recommend users do at least three of them:
+
+1. Exporting to <b>CSV</b> produces a user-specified number of test data indicating the attributes and levels of a number of random tasks. We recommend using this to double-check that all restrictions and randomization weights were successfully applied, as well as to conduct a power analysis.
+2. Exporting to <b>JSON</b> produces a file containing all the information the user set defining the survey. We recommend saving this so that you can recreate the survey settings if you clear your cookies. This JSON file can be imported to this web tool, automating this process.
+3. Exporting to <b>JavaScript (JS)</b> produces a file that can be uploaded to Qualtrics to perform randomization.
+4. Exporting to <b>Qualtrics</b> produces a .QSF file that can be loaded into Qualtrics, automatically populating a survey with appropriate randomization and the correct question tasks.
+
+</details>
+
+---
+
+## Other Options
+
+If you are interested in how researchers previously set up their conjoint surveys, see the <a href="https://yhoriuchi.github.io/projoint/articles/faq.html" target="_blank">FAQ Page</a> instructions for using alternative tools<sup><a href="https://yhoriuchi.github.io/projoint/articles/faq.html#how-did-researchers-design-conjoint-surveys-previously" target="_blank" style="text-decoration: none;">&#9432;</a></sup>
+
+---
+
+🏠 **Home:** [Home](https://yhoriuchi.github.io/projoint/index.html)
+

@@ -1,0 +1,156 @@
+## ----setup, include=FALSE-----------------------------------------------------
+library(projoint)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+
+## -----------------------------------------------------------------------------
+projoint_data <- function(labels, data) {
+  structure(
+    list(labels = labels, data = data),
+    class = "projoint_data"
+  )
+}
+
+## -----------------------------------------------------------------------------
+data("out1_arranged")
+out1_arranged$labels
+
+## ----message=FALSE, warning=FALSE---------------------------------------------
+# 1) Data: keep only the two joint profiles of interest
+data("out1_arranged")
+d1 <- out1_arranged$data
+d2 <- d1 |> 
+  mutate(y1 = case_when(
+    # Low housing cost, high crime
+    att1 == "att1:level1" & att6 == "att6:level2" ~ 1,
+    TRUE ~ 0
+  ),
+  y0 = case_when(
+    # High housing cost, low crime
+    att1 == "att1:level3" & att6 == "att6:level1" ~ 1,
+    TRUE ~ 0
+  )) |> 
+  filter(y1 == 1 | y0 == 1)
+
+# 2) Labels: rename only the two att1 levels to reflect the joint trade-offs
+labels1 <- out1_arranged$labels
+labels2 <- labels1 |> 
+  mutate(level = case_when(level_id == "att1:level1" ~ "Housing Cost (Low)\nCrime Rate(High)", 
+                           level_id == "att1:level3" ~ "Housing Cost (High)\nCrime Rate(Low)", 
+                           TRUE ~ level_id))
+
+## -----------------------------------------------------------------------------
+d1 |> count(att1, att6)
+d2 |> count(att1, att6) # only the two joint profiles remain
+labels1 |> filter(attribute_id == "att1")
+labels2 |> filter(attribute_id == "att1" & level_id %in% c("att1:level1", "att1:level3"))
+
+## ----fig.width = 6, fig.height = 3--------------------------------------------
+# 3) Build a new projoint_data object
+pj_data_wrangled <- projoint_data("labels" = labels2, 
+                                  "data" = d2)
+
+# 4) Quantity of interest: Low vs High housing cost under the specified crime conditions (choice-level MM)
+qoi <- set_qoi(
+  .att_choose = "att1", 
+  .lev_choose = "level1", # Low housing cost (with high crime in this subset)
+  .att_notchoose = "att1", 
+  .lev_notchoose = "level3" # High housing cost (with low crime in this subset)
+)
+
+# 5) Estimate and plot (horizontal layout)
+out <- projoint(pj_data_wrangled, qoi)
+plot(out)
+
+## ----message=FALSE, warning=FALSE---------------------------------------------
+# 1) Data: collapse levels for att7
+d1 <- out1_arranged$data
+d2 <- d1 |>
+  mutate(
+    att7 = case_when(
+      att7 %in% c("att7:level1", "att7:level2") ~ "att7:level7",  # City
+      att7 %in% c("att7:level5", "att7:level6") ~ "att7:level8",  # Suburban
+      TRUE ~ att7
+    )
+  )
+
+# 2) Labels: create matching level IDs and readable names
+labels1 <- out1_arranged$labels
+labels2 <- labels1 |>
+  mutate(
+    level_id = case_when(
+      level_id %in% c("att7:level1", "att7:level2") ~ "att7:level7",
+      level_id %in% c("att7:level5", "att7:level6") ~ "att7:level8",
+      TRUE ~ level_id
+    ),
+    level = case_when(
+      level_id == "att7:level7" ~ "City",
+      level_id == "att7:level8" ~ "Suburban",
+      TRUE ~ level
+    )
+  ) |>
+  distinct()
+
+## -----------------------------------------------------------------------------
+d1 |> count(att7)
+d2 |> count(att7)
+labels1 |> filter(attribute_id == "att7")
+labels2 |> filter(attribute_id == "att7")
+
+## ----fig.width = 6, fig.height = 3--------------------------------------------
+# 3) Build a new projoint_data object
+pj_data_wrangled <- projoint_data("labels" = labels2, 
+                                  "data" = d2)
+
+# 4) Quantity of interest: City vs. Suburban (choice-level MM)
+qoi <- set_qoi(
+  .structure     = "choice_level",
+  .att_choose    = "att7",
+  .lev_choose    = "level7",  # City
+  .att_notchoose = "att7",
+  .lev_notchoose = "level8"   # Suburban
+)
+
+# 5) Estimate and plot (horizontal layout)
+out <- projoint(pj_data_wrangled, qoi)
+plot(out)
+
+## ----fig.width = 6, fig.height = 3--------------------------------------------
+data("exampleData1")
+
+outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
+
+df_D <- exampleData1 |> filter(party_1 == "Democrat") |> reshape_projoint(outcomes)
+df_R <- exampleData1 |> filter(party_1 == "Republican") |> reshape_projoint(outcomes)
+df_0 <- exampleData1 |> filter(party_1 %in% c("Something else", "Independent")) |> reshape_projoint(outcomes)
+
+qoi <- set_qoi(
+  .structure = "choice_level",
+  .estimand = "mm",
+  .att_choose = "att2",
+  .lev_choose = "level3",
+  .att_notchoose = "att2",
+  .lev_notchoose = "level1"
+)
+
+out_D <- projoint(df_D, qoi)
+out_R <- projoint(df_R, qoi)
+out_0 <- projoint(df_0, qoi)
+
+out_merged <- bind_rows(
+  out_D$estimates |> mutate(party = "Democrat"),
+  out_R$estimates |> mutate(party = "Republican"),
+  out_0$estimates |> mutate(party = "Independent")
+) |> filter(estimand == "mm_corrected")
+
+# Plot
+
+ggplot(out_merged, aes(y = party, x = estimate)) +
+  geom_vline(xintercept = 0.5, linetype = "dashed", color = "gray") +
+  geom_pointrange(aes(xmin = conf.low, xmax = conf.high)) +
+  geom_text(aes(label = format(round(estimate, 2), nsmall = 2)), vjust = -1) +
+  labs(y = NULL, x = "Choice-level Marginal Mean",
+       title = "Preference for Democratic-majority areas") +
+  theme_classic()
+
