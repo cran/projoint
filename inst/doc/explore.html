@@ -48,8 +48,9 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -60,7 +61,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -350,7 +351,7 @@ effectively.</p>
 <p>Depending on your objectives, you may want to reorganize the data in
 a <code>projoint_data</code> object. The helper function below is
 internal to the package, but you can call it explicitly in your
-script.”</p>
+script.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>projoint_data <span class="ot">&lt;-</span> <span class="cf">function</span>(labels, data) {</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="fu">structure</span>(</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    <span class="fu">list</span>(<span class="at">labels =</span> labels, <span class="at">data =</span> data),</span>

@@ -239,117 +239,129 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<div id="why-choice-level-analysis." class="section level2">
-<h2><strong>Why Choice-Level Analysis?</strong>.</h2>
-<summary>
-Choice-level analysis is simpler, easier, and more powerful than
-profile-level analysis.
-</summary>
-<p>Conjoint designs originated in market research and psychology where
-each respondent is asked to rate each of two different profiles (e.g.,
-two products). Each of the two ratings provided separate information,
-and the two are analyzed as separate observations. Researchers with this
-<em>profile-level</em> design find it convenient to arrange their data
-with one profile per row, and thus twice as many rows as
-respondents.</p>
-<p>
-Unfortunately, when social scientists adopted the conjoint survey
-design, they kept the same profile-level design but changed the outcome
-measure from separate ratings to a single choice between the two
-profiles (e.g., to reflect a voter choice between two candidates). In
-this situation, respondents asked to make one choice between the two
-profiles that are exactly dependent, as choosing one necessarily meant
-not choosing the other (e.g., in a two-candidate partisan election, one
-observation would be “Democrat” and the other would be “not the
-Republican”). Using this profile-level design with 2*n rows but only n
-independent observations requires the introduction of complicated
-statistical procedures to correct for the dependence induced solely by
-the researcher’s decision to organize the data in this complicated way.
-</p>
-<p>
-We recommend the much simpler and more powerful <em>choice-level</em>
-design. The idea is to arrange data at the level of the respondent’s
-choice, so that each row in the data matrix includes information about
-one choice (and both profiles together, with n observations and n rows).
-Our
-<a href="https://gking.harvard.edu/conjointE" target="_blank" class="external-link"><em>AJPS</em>
-article</a> clarifies this point, shows how this choice-level analysis
-vastly simplifies the notation, statistical analysis procedures, and
-intuition, and greatly expands the substantive questions conjoint
-analysis be used to answer.
-</p>
-<p><strong>Key Issues:</strong></p>
+<div id="why-choice-level-analysis" class="section level2">
+<h2><strong>Why Choice-Level Analysis?</strong></h2>
+<p>💡 <strong>Choice-level analysis is simpler, easier, and more
+powerful than profile-level analysis.</strong></p>
 <ul>
-<li><p>Profile-level quantities like AMCEs, which require the assumption
-of independently generated profiles and disregard the context of
-comparison, prevent researchers from investigating many questions that
-(implicitly or explicitly) assume dependence between profiles.</p></li>
-<li><p><strong>Examples</strong> of choice-level research questions</p>
-<details>
+<li>🧠 Conjoint designs began in market research and psychology, where
+respondents <strong>rated</strong> two profiles (e.g., products). Each
+rating was treated as an <strong>independent observation</strong>,
+creating the <strong>profile-level design</strong> with
+<code>2 × n</code> rows for <code>n</code> respondents.</li>
+<li>🔍 Social scientists later used conjoint designs for
+<strong>choices</strong> instead of ratings but kept the same structure
+with a <strong>single binary outcome</strong>. This shift introduced
+<strong>statistical and conceptual issues</strong>.</li>
+</ul>
+<hr />
+<div id="problems-with-profile-level-analysis" class="section level3">
+<h3>⚠️ <strong>Problems with Profile-Level Analysis</strong></h3>
+<p>🚫 Profile-level analysis forces researchers to correct a dependence
+that they created themselves.</p>
 <ul>
-<li>Do voters choose a <strong>white</strong> candidate over a
-<strong>non-white</strong> candidate?
-<ul>
-<li>The levels (white vs. Asian, Black, Hispanic) always differ between
-profiles.</li>
-</ul></li>
-<li>Do <strong>Asian Democrat respondents</strong> prefer an
-<strong>Asian Republican</strong> over a <strong>white
-Democrat</strong>?
-<ul>
-<li>The two profiles are specifically designed based on multiple
-attributes.<br />
+<li>🔁 <strong>Redundant structure:</strong> Each choice task generates
+<strong>two rows</strong> per task for each respondent even though there
+is only <strong>one independent choice</strong>.<br />
 </li>
-</ul></li>
-<li>Do voters care about candidate electability?
+<li>🔗 <strong>Mechanical dependence:</strong> Selecting one profile
+<strong>necessarily implies rejecting the other</strong>, violating the
+independence assumption.<br />
+</li>
+<li>🧩 <strong>Artificial complexity:</strong> Analysts must correct for
+this dependence using <strong>complicated statistical
+adjustments</strong>, even though it arises solely from how the data
+were organized—not from respondents’ behavior.</li>
+</ul>
+<hr />
+</div>
+<div id="advantages-of-choice-level-analysis" class="section level3">
+<h3>✅ <strong>Advantages of Choice-Level Analysis</strong></h3>
+<p>In contrast, <strong>choice-level analysis</strong> organizes data by
+respondent <em>decisions</em> rather than profiles.</p>
 <ul>
-<li>The sum of the two percentages should be 100.</li>
-</ul></li>
-<li>Do voters prefer a <strong>status quo</strong> option over a
-<strong>policy proposal</strong>?
+<li>📋 Each unit of observation represents <strong>a choice</strong> for
+a given task per respondent.<br />
+</li>
+<li>⚡ The outcome variable reflects <strong>which profile was
+chosen</strong> in that task.<br />
+</li>
+<li>🧠 This data structure allows researchers to model the choice
+<strong>conditional on the full comparison</strong>.</li>
+</ul>
+<p>🎯 <strong>Choice-level analysis</strong> directly models the
+respondent’s decision between two (or more) alternatives,<br />
+capturing the true structure of the conjoint task.</p>
+<hr />
+</div>
+</div>
+<div id="key-issues-and-applications" class="section level2">
+<h2><strong>Key Issues and Applications</strong></h2>
 <ul>
-<li>One profile is always fixed, while another varies across tasks.</li>
-</ul></li>
-<li>How much do voters prefer <strong>extreme left-leaning</strong> or
-<strong>extreme right-leaning</strong> policies?
+<li><p>Profile-level estimands like <strong>AMCEs</strong> assume that
+each profile is generated independently and ignores how respondents
+evaluate one profile <em>relative</em> to another. This limits the types
+of questions researchers can ask.</p></li>
+<li><p>Choice-level analysis allows researchers to explore questions
+that <strong>explicitly depend on the comparison between
+profiles</strong>, such as:</p></li>
+</ul>
+<details>
+<summary>
+<strong>Examples of Choice-Level Research Questions</strong>
+</summary>
 <ul>
-<li>The left-leaning (right-leaning) candidate’s policies (attributes)
-should always be positioned consistently on the left (right).</li>
-</ul></li>
-</ul></li>
+<li><p>🗳️ Do voters choose a <strong>white</strong> candidate over a
+<strong>non-white</strong> candidate?<br />
+(The levels—white vs. Asian, Black, Hispanic—always differ between
+profiles.)</p></li>
+<li><p>🌐 Do <strong>Asian Democrat respondents</strong> prefer an
+<strong>Asian Republican</strong> over a <strong>white
+Democrat</strong>?<br />
+(Profiles are intentionally designed with multiple correlated
+attributes.)</p></li>
+<li><p>📊 Do voters care about <strong>electability</strong>?<br />
+(The two percentages representing win probability must sum to
+100.)</p></li>
+<li><p>⚖️ Do voters prefer the <strong>status quo</strong> over a
+<strong>policy proposal</strong>?<br />
+(One profile is fixed while the other varies across tasks.)</p></li>
+<li><p>🧭 How much do voters prefer <strong>extreme
+left-leaning</strong> or <strong>extreme right-leaning</strong>
+policies?<br />
+(Attributes are consistently positioned on the ideological
+spectrum.)</p></li>
 </ul>
 </details>
-<ul>
-<li>When individuals compare two profiles side-by-side (as in most
-conjoint tasks), their evaluations are often <strong>psychologically
-influenced by the alternative</strong> (See Horiuchi and Johnson
-2025).</li>
-</ul>
+<p>Furthermore, when individuals compare profiles side-by-side, their
+evaluations are often <strong>psychologically influenced by the
+alternative</strong>, such as through <strong>assimilation or contrast
+effects</strong><br />
+(see <em>Horiuchi and Johnson 2025</em>).</p>
 <hr />
 </div>
 <div id="why-move-to-choice-level-analysis" class="section level2">
 <h2><strong>Why Move to Choice-Level Analysis?</strong></h2>
+<p>🔍 <strong>Choice-level analysis models the decision <em>between</em>
+two profiles, not the evaluation of a single profile.</strong></p>
+<p>This structure more closely mirrors:</p>
 <ul>
-<li><strong>Choice-level analysis</strong> models the decision
-<strong>between two profiles</strong>, not the evaluation of a single
-profile.</li>
-<li>This approach more closely mirrors:
-<ul>
-<li>How people make real-world tradeoffs (e.g., choosing between
-candidates, products, policies)</li>
-<li>How comparative contexts shape judgments (e.g., assimilation,
-contrast effects)</li>
-</ul></li>
-<li>Rather than estimating the probability of selecting a standalone
-profile, choice-level analysis estimates <strong>the probability of
-choosing one profile over another</strong>, conditional on both the
-attributes of interest and other attributes.</li>
+<li>🧠 <strong>Real-world decision-making</strong>, where people choose
+among competing alternatives.<br />
+</li>
+<li>🔄 <strong>Comparative cognition</strong>, where evaluations depend
+on the context of available options.<br />
+</li>
+<li>🎛️ <strong>Tradeoff reasoning</strong>, where respondents weigh
+attribute combinations jointly.</li>
 </ul>
-<p>✅ <strong>Better matches real-world behavior</strong><br />
-✅ <strong>Explicitly captures comparative
-decision-making</strong><br />
-✅ <strong>Reveals true tradeoffs and feature
-prioritization</strong></p>
+<p>Hence, rather than estimating the probability of selecting an
+isolated profile, choice-level analysis estimates the
+<strong>probability of choosing one profile over another</strong>,
+conditional on all attributes involved.</p>
+<p>✅ Mirrors real-world behavior<br />
+✅ Captures comparative judgment and psychological context<br />
+✅ Reveals authentic tradeoffs and priorities</p>
 <hr />
 </div>
 <div id="summary" class="section level2">
@@ -367,24 +379,24 @@ prioritization</strong></p>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Treats profiles independently</td>
-<td align="left">Models the decision between profiles</td>
+<td align="left">Treats profiles as independent</td>
+<td align="left">Models the decision <em>between</em> profiles</td>
 </tr>
 <tr class="even">
-<td align="left">Ignores comparative psychology</td>
-<td align="left">Captures influence of side-by-side comparisons</td>
+<td align="left">Ignores comparative context</td>
+<td align="left">Captures mutual influence of options</td>
 </tr>
 <tr class="odd">
 <td align="left">May blur or bias tradeoffs</td>
-<td align="left">Highlights real tradeoffs</td>
+<td align="left">Highlights actual tradeoffs</td>
 </tr>
 <tr class="even">
-<td align="left">Can be misleading</td>
-<td align="left">Much more informative</td>
+<td align="left">Can misstate uncertainty</td>
+<td align="left">Produces more interpretable estimates</td>
 </tr>
 <tr class="odd">
-<td align="left">Requires complicated statistics</td>
-<td align="left">Allows simple methods</td>
+<td align="left">Requires complex correction methods</td>
+<td align="left">Works with simple and transparent models</td>
 </tr>
 </tbody>
 </table>
@@ -392,30 +404,34 @@ prioritization</strong></p>
 </div>
 <div id="key-takeaway" class="section level2">
 <h2><strong>Key Takeaway</strong></h2>
-<blockquote>
-<p>🔎 If your conjoint design presents two profiles for comparison,
-<strong>choice-level analysis is essential for valid and insightful
-inference</strong>.</p>
-<p>📈 It provides <strong>deeper insights</strong>, <strong>more
-accurate estimates</strong>, and a <strong>closer reflection of actual
-decision-making</strong>.</p>
-</blockquote>
+<p>🚀 If your conjoint design presents respondents with <strong>two or
+more profiles for comparison</strong>,<br />
+then <strong>choice-level analysis is essential for valid,
+interpretable, and psychologically realistic inference</strong>.</p>
+<p>It provides:</p>
+<ul>
+<li><strong>Deeper insights into human decision-making</strong><br />
+</li>
+<li><strong>Cleaner estimation procedures</strong><br />
+</li>
+<li><strong>Closer correspondence to real-world behavior</strong></li>
+</ul>
 <hr />
 </div>
 <div id="references" class="section level2">
 <h2>📚 <strong>References</strong></h2>
 <ul>
-<li><strong>Clayton, Horiuchi, Kaufman, King, Komisarchik
+<li><p><strong>Clayton, Horiuchi, Kaufman, King, &amp; Komisarchik
 (Forthcoming).</strong><br />
-“Correcting Measurement Error Bias in Conjoint Survey
-Experiments.”<br />
+<em>Correcting Measurement Error Bias in Conjoint Survey
+Experiments.</em><br />
 <em>Forthcoming, American Journal of Political Science.</em><br />
-<a href="https://gking.harvard.edu/conjointE">Pre-Print
-Available</a></li>
-<li><strong>Horiuchi and Johnson (2025).</strong><br />
-“Advancing Conjoint Analysis: Delving Further into Profile
-Comparisons.”<br />
-<em>Work-in-progress.</em></li>
+<a href="https://gking.harvard.edu/conjointE">Preprint
+available</a></p></li>
+<li><p><strong>Horiuchi &amp; Johnson (2025).</strong><br />
+<em>Advancing Conjoint Analysis: Delving Further into Profile
+Comparisons.</em><br />
+<em>Work in progress.</em></p></li>
 </ul>
 </div>
 
