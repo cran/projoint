@@ -399,7 +399,7 @@ rate</strong>.</li>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># 1) Data: keep only the two joint profiles of interest</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;out1_arranged&quot;</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>d1 <span class="ot">&lt;-</span> out1_arranged<span class="sc">$</span>data</span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> d1 <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>d2 <span class="ot">&lt;-</span> d1 <span class="sc">|&gt;</span></span>
 <span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y1 =</span> <span class="fu">case_when</span>(</span>
 <span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>    <span class="co"># Low housing cost, high crime</span></span>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>    att1 <span class="sc">==</span> <span class="st">&quot;att1:level1&quot;</span> <span class="sc">&amp;</span> att6 <span class="sc">==</span> <span class="st">&quot;att6:level2&quot;</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
@@ -409,7 +409,7 @@ rate</strong>.</li>
 <span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>    <span class="co"># High housing cost, low crime</span></span>
 <span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>    att1 <span class="sc">==</span> <span class="st">&quot;att1:level3&quot;</span> <span class="sc">&amp;</span> att6 <span class="sc">==</span> <span class="st">&quot;att6:level1&quot;</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
 <span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">0</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  )) <span class="sc">|&gt;</span> </span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  )) <span class="sc">|&gt;</span></span>
 <span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="fu">filter</span>(y1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> y0 <span class="sc">==</span> <span class="dv">1</span>)</span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a></span>
 <span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co"># 2) Labels: rename only the two att1 levels to reflect the joint trade-offs</span></span>

@@ -1,8 +1,8 @@
 Package: projoint
 Type: Package
 Title: Conjoint Analysis with Reliability Correction and Visualization
-Version: 1.1.0
-Date: 2026-02-16
+Version: 1.1.1
+Date: 2026-02-22
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
 Authors@R: 
     c(
@@ -36,6 +36,6 @@ Depends: R (>= 4.1.0)
 LazyData: false
 BugReports: https://github.com/yhoriuchi/projoint/issues
 NeedsCompilation: no
-Packaged: 2026-02-16 13:06:51 UTC; yusakuhoriuchi
+Packaged: 2026-02-22 14:01:41 UTC; yh25m
 Repository: CRAN
-Date/Publication: 2026-02-16 14:20:02 UTC
+Date/Publication: 2026-02-22 23:00:02 UTC

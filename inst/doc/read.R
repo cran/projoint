@@ -113,7 +113,10 @@ out4
 # save_labels(out1, "temp/labels_original.csv")
 
 ## ----eval=FALSE---------------------------------------------------------------
-# data(out1_arranged, package = "projoint")
+# out1_arranged <- read_labels(out1, "temp/labels_arranged.csv")
+
+## ----eval=TRUE, eco=FALSE-----------------------------------------------------
+data(out1_arranged, package = "projoint")
 
 ## -----------------------------------------------------------------------------
 mm <- projoint(out1, .structure = "profile_level", .estimand = "mm")
