@@ -1,20 +1,20 @@
 Package: projoint
 Type: Package
 Title: Conjoint Analysis with Reliability Correction and Visualization
-Version: 1.1.1
-Date: 2026-02-22
+Version: 1.1.2
+Date: 2026-07-15
 Maintainer: Yusaku Horiuchi <yusaku.horiuchi@gmail.com>
 Authors@R: 
     c(
       person("Yusaku", "Horiuchi", email = "yusaku.horiuchi@gmail.com",
              role = c("aut", "cre"),
-             comment = c(ORCID = "https://orcid.org/0000-0003-0295-4089")),
+             comment = c(ORCID = "0000-0003-0295-4089")),
       person("Aaron", "Kaufman", email = "aaronkaufman@nyu.edu",
              role = "aut",
-             comment = c(ORCID = "https://orcid.org/0000-0003-3688-0428")),
+             comment = c(ORCID = "0000-0003-3688-0428")),
       person("Gary", "King", email = "king@harvard.edu",
              role = "aut",
-             comment = c(ORCID = "https://orcid.org/0000-0002-5327-7631"))
+             comment = c(ORCID = "0000-0002-5327-7631"))
     )
 Author: Yusaku Horiuchi [aut, cre] (ORCID:
     <https://orcid.org/0000-0003-0295-4089>),
@@ -36,6 +36,6 @@ Depends: R (>= 4.1.0)
 LazyData: false
 BugReports: https://github.com/yhoriuchi/projoint/issues
 NeedsCompilation: no
-Packaged: 2026-02-22 14:01:41 UTC; yh25m
+Packaged: 2026-07-15 12:16:14 UTC; yh25m
 Repository: CRAN
-Date/Publication: 2026-02-22 23:00:02 UTC
+Date/Publication: 2026-07-15 12:50:02 UTC
