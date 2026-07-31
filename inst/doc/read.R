@@ -45,7 +45,7 @@ outcomes1 <- c(outcomes, "choice1_repeated_flipped")
 out1 <- reshape_projoint(
   .dataframe = exampleData1,
   .outcomes = outcomes1,
-  .choice_labels = c("A", "B"),
+  .choice_map = c("A" = 1, "B" = 2),
   .alphabet = "K",
   .idvar = "ResponseId",
   .repeated = TRUE,

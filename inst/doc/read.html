@@ -379,6 +379,10 @@ fail to load properly!</p>
 </summary>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Example: If your file is located in a &quot;data&quot; folder</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_Qualtrics</span>(<span class="st">&quot;data/your_file.csv&quot;</span>)</span></code></pre></div>
+<p><code>read_Qualtrics()</code> automatically removes the question-text
+and <code>ImportId</code> metadata rows used by current Qualtrics
+exports. It also recognizes legacy exports with only a question-text row
+while preserving the original variable names and column order.</p>
 <p>Or, if using an example bundled with <strong>projoint</strong>:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Inspect the imported data:</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>data</span></code></pre></div>
@@ -438,11 +442,14 @@ element</strong>.<br />
 itself <strong>need not</strong> contain digits—only its position (last)
 matters.<br />
 </li>
-<li>Outcome strings should end with your choice labels; by default we
-parse the <strong>last character</strong> and expect
-<code>&quot;A&quot;</code>/<code>&quot;B&quot;</code>. If your survey uses
-<code>&quot;1&quot;</code>/<code>&quot;2&quot;</code> (or other endings), set
-<code>.choice_labels</code> accordingly.</li>
+<li>Outcome strings must end with verified choice labels. For an
+auditable mapping, use <code>.choice_map = c(&quot;A&quot; = 1, &quot;B&quot; = 2)</code>
+(or the corresponding mapping from your instrument). <strong>projoint
+cannot infer whether an exported label or numeric recode refers to
+profile 1 or profile 2.</strong></li>
+<li>Invalid labels, trailing whitespace, and missing choices now stop
+with an informative error. Retain missing choices only after review by
+setting <code>.allow_missing_choices = TRUE</code>.</li>
 </ul>
 </blockquote>
 <div id="example-flipped-repeated-task" class="section level3">
@@ -453,7 +460,7 @@ parse the <strong>last character</strong> and expect
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">reshape_projoint</span>(</span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  <span class="at">.dataframe =</span> exampleData1,</span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="at">.outcomes =</span> outcomes1,</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="at">.choice_labels =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>),</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="at">.choice_map =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;B&quot;</span> <span class="ot">=</span> <span class="dv">2</span>),</span>
 <span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="at">.alphabet =</span> <span class="st">&quot;K&quot;</span>,</span>
 <span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="at">.idvar =</span> <span class="st">&quot;ResponseId&quot;</span>,</span>
 <span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="at">.repeated =</span> <span class="cn">TRUE</span>,</span>
@@ -463,7 +470,8 @@ parse the <strong>last character</strong> and expect
 <ul>
 <li><code>.outcomes</code>: Outcome columns (include repeated task
 last)</li>
-<li><code>.choice_labels</code>: Profile labels (e.g., “A”, “B”)</li>
+<li><code>.choice_map</code>: Verified mapping from response labels to
+profiles</li>
 <li><code>.idvar</code>: Respondent ID variable</li>
 <li><code>.alphabet</code>: Variable prefix (“K”)</li>
 <li><code>.repeated</code>, <code>.flipped</code>: If repeated task

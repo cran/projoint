@@ -375,11 +375,13 @@ element</strong>.<br />
 itself <strong>need not</strong> contain digits—only its position (last)
 matters.<br />
 </li>
-<li>Outcome strings should end with your choice labels; by default we
-parse the <strong>last character</strong> and expect
-<code>&quot;A&quot;</code>/<code>&quot;B&quot;</code>. If your survey uses
-<code>&quot;1&quot;</code>/<code>&quot;2&quot;</code> (or other endings), set
-<code>.choice_labels</code> accordingly.</li>
+<li>Outcome strings must end with verified choice labels. Prefer an
+explicit map such as <code>.choice_map = c(&quot;A&quot; = 1, &quot;B&quot; = 2)</code>.
+Verify this mapping from the survey instrument or QSF file; it cannot be
+inferred from the CSV.</li>
+<li>Invalid labels, trailing whitespace, and missing choices stop with
+an informative error. Use <code>.allow_missing_choices = TRUE</code>
+only after review.</li>
 </ul>
 </blockquote>
 <p><strong>Examples</strong></p>
