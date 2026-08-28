@@ -8,7 +8,11 @@ library(patchwork)
 # Standard order; repeated = task 1
 data("exampleData1")
 outcomes <- c(paste0("choice", 1:8), "choice1_repeated_flipped")
-out1 <- reshape_projoint(exampleData1, outcomes)
+out1 <- reshape_projoint(
+  exampleData1,
+  outcomes,
+  .choice_map = c("Community A" = 1, "Community B" = 2)
+)
 
 ## -----------------------------------------------------------------------------
 out1$labels

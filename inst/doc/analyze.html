@@ -376,9 +376,11 @@ itself <strong>need not</strong> contain digits—only its position (last)
 matters.<br />
 </li>
 <li>Outcome strings must end with verified choice labels. Prefer an
-explicit map such as <code>.choice_map = c(&quot;A&quot; = 1, &quot;B&quot; = 2)</code>.
-Verify this mapping from the survey instrument or QSF file; it cannot be
-inferred from the CSV.</li>
+explicit map using the complete exported response values, such as
+<code>.choice_map = c(&quot;Community A&quot; = 1, &quot;Community B&quot; = 2)</code>. The
+names are the response values; <code>1</code> and <code>2</code> are the
+Qualtrics profile positions. Verify this relationship from the survey
+instrument or QSF file because it cannot be inferred from the CSV.</li>
 <li>Invalid labels, trailing whitespace, and missing choices stop with
 an informative error. Use <code>.allow_missing_choices = TRUE</code>
 only after review.</li>
@@ -388,7 +390,11 @@ only after review.</li>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Standard order; repeated = task 1</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;exampleData1&quot;</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>outcomes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">paste0</span>(<span class="st">&quot;choice&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>), <span class="st">&quot;choice1_repeated_flipped&quot;</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">reshape_projoint</span>(exampleData1, outcomes)</span></code></pre></div>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">reshape_projoint</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  exampleData1,</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  outcomes,</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="at">.choice_map =</span> <span class="fu">c</span>(<span class="st">&quot;Community A&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;Community B&quot;</span> <span class="ot">=</span> <span class="dv">2</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>)</span></code></pre></div>
 <hr />
 </div>
 <div id="why-use-ids-e.g.-att1-level1" class="section level2">

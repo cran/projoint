@@ -37,6 +37,10 @@ data(exampleData1_labelled_tibble, package = "projoint")
 data(out1_arranged, package = "projoint")
 
 
+## -----------------------------------------------------------------------------
+outcomes <- paste0("choice", 1:8)
+sort(unique(unlist(exampleData1[outcomes], use.names = FALSE)))
+
 ## ----error=TRUE---------------------------------------------------------------
 try({
 outcomes <- paste0("choice", 1:8)
@@ -45,7 +49,7 @@ outcomes1 <- c(outcomes, "choice1_repeated_flipped")
 out1 <- reshape_projoint(
   .dataframe = exampleData1,
   .outcomes = outcomes1,
-  .choice_map = c("A" = 1, "B" = 2),
+  .choice_map = c("Community A" = 1, "Community B" = 2),
   .alphabet = "K",
   .idvar = "ResponseId",
   .repeated = TRUE,
